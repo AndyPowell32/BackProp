@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace Test_BP
 {
@@ -30,6 +26,16 @@ namespace Test_BP
             for (int i = 0; i < oSums.Length; ++i)
                 result[i] = Math.Exp(oSums[i] - max) / scale;
             return result;
+        }
+
+        public static string VectorString(double[] vector)
+        {
+            var sb = new StringBuilder("[");
+            for (int i = 0; i < vector.Length - 1; i++)
+                sb.Append($"{vector[i]:F0},");
+            sb.Append($"{vector[vector.Length - 1]:F0}");
+            sb.Append("]");
+            return sb.ToString(); ;
         }
     }
 }
