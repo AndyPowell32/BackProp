@@ -1,10 +1,10 @@
-﻿namespace Test_BP
+﻿using System.Text;
+
+namespace Test_BP
 {
     class BackPropProgram
     {
-        private const int numInput = 3;
-        private const int numHidden = 4;
-        private const int numOutput = 2;
+        private static readonly int[] _NeuronCounts = { 3, 4, 5, 2 };
 
         private static readonly double[] xValues = new double[3] { 1.0, 2.0, 3.0 }; // Inputs.
         private static readonly double[] tValues = new double[2] { 0.2500, 0.7500 }; // Target outputs.
@@ -13,9 +13,14 @@
         {
 
             Console.WriteLine("Back-propagation demo\n");
-            Console.WriteLine($"Create {numInput}-{numHidden}-{numOutput} neural network\n");
+            var sb = new StringBuilder($"Create {_NeuronCounts[0]}");
+            for (int i = 1; i < _NeuronCounts.Length - 1; i++)
+                sb.Append($"-{_NeuronCounts[i]}");
+            sb.Append($"-{_NeuronCounts[_NeuronCounts.Length-1]} neural network\n");
 
-            var nn2 = new NeuralNetwork(numInput, numHidden, numOutput);
+            Console.WriteLine(sb);
+
+            var nn2 = new NeuralNetwork(_NeuronCounts);
             for (int i = 0; i <= 1000; i++)
             {
                 nn2.UpdateWeights(xValues, tValues);

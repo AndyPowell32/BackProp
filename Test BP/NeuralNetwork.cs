@@ -3,23 +3,32 @@
     public class NeuralNetwork
     {
         private InputLayer _inputLayer;
-        private HiddenLayer _hiddenLayer;
+        private HiddenLayer[] _hiddenLayers;
         private OutputLayer _outputLayer;
 
         public double[] Outputs => _outputLayer.Outputs;
 
-        public NeuralNetwork(int numInput, int numHidden, int numOutput)
+        public NeuralNetwork(params int[] neuronCounts)
         {
-            _inputLayer = new InputLayer(numInput);
-            _hiddenLayer = new HiddenLayer(numHidden, _inputLayer, ActivationFunction.TanH);
-            _outputLayer = new OutputLayer(numOutput, _hiddenLayer, ActivationFunction.SoftMax);
-            _hiddenLayer.SetNextLayer(_outputLayer);
+            _inputLayer = new InputLayer(neuronCounts[0]);
+            _hiddenLayers = new HiddenLayer[neuronCounts.Length - 2];
+            ILayer prevLayer = _inputLayer;
+            for (int i = 0; i < _hiddenLayers.Length; i++)
+            {
+                _hiddenLayers[i] = new HiddenLayer(neuronCounts[i + 1], prevLayer, ActivationFunction.TanH);
+                prevLayer = _hiddenLayers[i];
+            }
+            _outputLayer = new OutputLayer(neuronCounts[neuronCounts.Length - 1], prevLayer, ActivationFunction.SoftMax);
+            for (int i = 0; i < _hiddenLayers.Length - 1; i++)
+                _hiddenLayers[i].SetNextLayer(_hiddenLayers[i + 1]);
+            _hiddenLayers[_hiddenLayers.Length - 1].SetNextLayer(_outputLayer);
         }
 
         public void ComputeOutputs(double[] inputs)
         {
             _inputLayer.SetInputs(inputs);
-            _hiddenLayer.FeedForward();
+            for (int i = 0; i < _hiddenLayers.Length; i++)
+                _hiddenLayers[i].FeedForward();
             _outputLayer.FeedForward();
         }
 
@@ -27,8 +36,10 @@
         {
             ComputeOutputs(inputs);
             _outputLayer.ComputeSoftMaxGradients(targetOutputs);
-            _hiddenLayer.ComputeTanHGradients(); //??
-            _hiddenLayer.UpdateWeightsAndBiases();
+            for (int i = _hiddenLayers.Length - 1; i >= 0; i--)
+                _hiddenLayers[i].ComputeTanHGradients();
+            for (int i = 0; i < _hiddenLayers.Length; i++)
+                _hiddenLayers[i].UpdateWeightsAndBiases();
             _outputLayer.UpdateWeightsAndBiases();
         }
     }
