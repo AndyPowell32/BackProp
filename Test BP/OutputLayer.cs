@@ -1,9 +1,13 @@
-﻿namespace Test_BP
+﻿using System;
+
+namespace Test_BP
 {
     public class OutputLayer : INextLayer
     {
-        private const double _defaultWeight = 0.5;
-        private const double _defaultBias = 0.5;
+        //private const double _defaultWeight = 0.5;
+        //private const double _defaultBias = 0.5;
+
+        private static readonly Random _random = new Random();
 
         private ActivationFunction _activationFunction;
         private double _learnRate;
@@ -36,10 +40,14 @@
             for (int i = 0; i < Count; i++)
             {
                 Weights[i] = new double[_prevLayer.Count];
-                Array.Fill(Weights[i], _defaultWeight);
+                //Array.Fill(Weights[i], _defaultWeight);
+                for (int j = 0; j < Weights[i].Length; j++)
+                    Weights[i][j] = _random.NextDouble() - 0.5;
                 _prevWeightsDelta[i] = new double[_prevLayer.Count];
             }
-            Array.Fill(_biases, _defaultBias);
+            //Array.Fill(_biases, _defaultBias);
+            for (int i = 0; i < Count; i++)
+                _biases[i] = _random.NextDouble() - 0.5;
         }
 
         public void FeedForward()

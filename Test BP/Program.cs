@@ -4,7 +4,7 @@ namespace Test_BP
 {
     class BackPropProgram
     {
-        private const int _Epochs = 2000;
+        private const int _Epochs = 1000;
         private const double _learnRate = 0.05;
         private const double _momentum = 0.01;
 
