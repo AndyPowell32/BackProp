@@ -15,7 +15,7 @@ namespace Test_BP
             else return Math.Tanh(v);
         }
 
-        public static double[] Softmax(double[] sums)
+        public static void Softmax(double[] sums, double[] outputs)
         {
             double max = sums[0];
             for (int i = 1; i < sums.Length; i++)
@@ -24,10 +24,10 @@ namespace Test_BP
             double scale = 0;
             for (int i = 0; i < sums.Length; i++)
                 scale += Math.Exp(sums[i] - max);
-            double[] result = new double[sums.Length]; //?? new
+            //double[] result = new double[sums.Length]; //?? new
             for (int i = 0; i < sums.Length; ++i)
-                result[i] = Math.Exp(sums[i] - max) / scale;
-            return result;
+                outputs[i] = Math.Exp(sums[i] - max) / scale;
+            //return result;
         }
 
         public static string VectorString(double[] vector)

@@ -62,11 +62,7 @@
                 for (int i = 0; i < Count; ++i)
                     Outputs[i] = NNHelper.HyperTan(_sums[i]);
             else
-            {
-                double[] softOut = NNHelper.Softmax(_sums);
-                for (int i = 0; i < Count; ++i)
-                    Outputs[i] = softOut[i];
-            }
+                NNHelper.Softmax(_sums, Outputs);
         }
 
         //public void ComputeSoftMaxGradients(double[] targets)

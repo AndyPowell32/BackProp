@@ -1,6 +1,6 @@
 ﻿namespace Test_BP
 {
-    public class OutputLayer: INextLayer
+    public class OutputLayer : INextLayer
     {
         private const double _defaultWeight = 0.5;
         private const double _defaultBias = 0.5;
@@ -56,11 +56,7 @@
                 for (int i = 0; i < Count; ++i)
                     Outputs[i] = NNHelper.HyperTan(_sums[i]);
             else
-            {
-                double[] softOut = NNHelper.Softmax(_sums);
-                for (int i = 0; i < Count; ++i)
-                    Outputs[i] = softOut[i];
-            }
+                NNHelper.Softmax(_sums, Outputs);
         }
 
         public void ComputeSoftMaxGradients(double[] targets)
