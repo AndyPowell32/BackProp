@@ -8,17 +8,17 @@
 
         public double[] Outputs => _outputLayer.Outputs;
 
-        public NeuralNetwork(params int[] neuronCounts)
+        public NeuralNetwork(double learnRate, double momentum, params int[] neuronCounts)
         {
             _inputLayer = new InputLayer(neuronCounts[0]);
             _hiddenLayers = new HiddenLayer[neuronCounts.Length - 2];
             ILayer prevLayer = _inputLayer;
             for (int i = 0; i < _hiddenLayers.Length; i++)
             {
-                _hiddenLayers[i] = new HiddenLayer(neuronCounts[i + 1], prevLayer, ActivationFunction.TanH);
+                _hiddenLayers[i] = new HiddenLayer(neuronCounts[i + 1], prevLayer, ActivationFunction.TanH, learnRate, momentum);
                 prevLayer = _hiddenLayers[i];
             }
-            _outputLayer = new OutputLayer(neuronCounts[neuronCounts.Length - 1], prevLayer, ActivationFunction.SoftMax);
+            _outputLayer = new OutputLayer(neuronCounts[neuronCounts.Length - 1], prevLayer, ActivationFunction.SoftMax, learnRate, momentum);
             for (int i = 0; i < _hiddenLayers.Length - 1; i++)
                 _hiddenLayers[i].SetNextLayer(_hiddenLayers[i + 1]);
             _hiddenLayers[_hiddenLayers.Length - 1].SetNextLayer(_outputLayer);

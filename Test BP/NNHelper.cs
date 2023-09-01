@@ -4,6 +4,8 @@ namespace Test_BP
 {
     public static class NNHelper
     {
+        //private static readonly Random _random = new Random();
+         
         public static double HyperTan(double v)
         {
             if (v < -20.0)
@@ -13,18 +15,18 @@ namespace Test_BP
             else return Math.Tanh(v);
         }
 
-        public static double[] Softmax(double[] oSums)
+        public static double[] Softmax(double[] sums)
         {
-            double max = oSums[0];
-            for (int i = 0; i < oSums.Length; ++i)
-                if (oSums[i] > max)
-                    max = oSums[i];
-            double scale = 0.0;
-            for (int i = 0; i < oSums.Length; ++i)
-                scale += Math.Exp(oSums[i] - max);
-            double[] result = new double[oSums.Length];
-            for (int i = 0; i < oSums.Length; ++i)
-                result[i] = Math.Exp(oSums[i] - max) / scale;
+            double max = sums[0];
+            for (int i = 1; i < sums.Length; i++)
+                if (sums[i] > max)
+                    max = sums[i];
+            double scale = 0;
+            for (int i = 0; i < sums.Length; i++)
+                scale += Math.Exp(sums[i] - max);
+            double[] result = new double[sums.Length]; //?? new
+            for (int i = 0; i < sums.Length; ++i)
+                result[i] = Math.Exp(sums[i] - max) / scale;
             return result;
         }
 
@@ -37,5 +39,21 @@ namespace Test_BP
             sb.Append("]");
             return sb.ToString(); ;
         }
+
+        //public static int[] RandomIndices(int n)
+        //{
+        //    var randomIndices = new int[n];
+        //    for (int i = 0; i < n; i++)
+        //        randomIndices[i] = i;
+
+        //    for (int j = 0; j < randomIndices.Length; j++)
+        //    {
+        //        int k = _random.Next(randomIndices.Length);
+        //        int temp = randomIndices[j];
+        //        randomIndices[j] = randomIndices[k];
+        //        randomIndices[k] = temp;
+        //    }
+        //    return randomIndices;
+        //}
     }
 }

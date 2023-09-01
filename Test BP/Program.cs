@@ -5,6 +5,8 @@ namespace Test_BP
     class BackPropProgram
     {
         private const int _Epochs = 2000;
+        private const double _learnRate = 0.05;
+        private const double _momentum = 0.01;
 
         private static readonly int[] _HiddenLayerNeuronCounts = {3, 3};
 
@@ -38,7 +40,6 @@ namespace Test_BP
                 neuronCounts[i + 1] = _HiddenLayerNeuronCounts[i];
             neuronCounts[neuronCounts.Length - 1] = trainingSet[0].Item2.Count();
 
-
             Console.WriteLine("Back-propagation\n");
 
             var sb = new StringBuilder($"{neuronCounts[0]}");
@@ -50,7 +51,7 @@ namespace Test_BP
             Console.WriteLine();
 
 
-            var nn2 = new NeuralNetwork(neuronCounts);
+            var nn2 = new NeuralNetwork(_learnRate, _momentum, neuronCounts);
             var randomIndices = new int[trainingSet.Length];
             for (int j = 0; j < trainingSet.Length; j++)
                 randomIndices[j] = j;
